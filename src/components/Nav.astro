@@ -1,0 +1,41 @@
+---
+import NavLink from "./NavLink.astro";
+// import { SITE_TITLE } from "../consts";
+---
+
+<header>
+    <nav>
+        <NavLink href="/">Home</NavLink>
+        <NavLink href="/about">About</NavLink>
+    </nav>
+</header>
+
+<style>
+    /* <=================- navbar styling -==================> */
+
+    header {
+        background-color: #f8f8f8;
+    }
+
+    nav {
+        background: #efebe6;
+        min-height: 3rem;
+        height: auto;
+        padding-inline: 2rem;
+
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        gap: 1.5rem;
+        top: 0;
+        border-radius: 0 0 60px 60px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #555353;
+        transition: all 0.5s ease;
+    }
+</style>

@@ -1,0 +1,39 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Nav from "../components/Nav.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+
+    <body>
+        <Nav />
+
+        <section class="about">
+            <h1>About Section</h1>
+            <!-- About Card -->
+            <div class="card">
+                <div>
+                    <h2>Yuchen Wang</h2>
+                    <p>
+                        I’m a sophomore at the University of Michigan studying
+                        Computer Science. I enjoy building interactive
+                        simulations, exploring machine learning, and tackling
+                        challenging algorithmic problems.
+                    </p>
+                    <p>
+                        In my free time, I like to practice piano, work on
+                        sketch-to-photo generative models, and contribute to
+                        open-source projects.
+                    </p>
+                    <a href="../index.html" class="btn-outline"
+                        >Back to Home →</a
+                    >
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
