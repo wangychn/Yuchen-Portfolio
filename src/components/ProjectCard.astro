@@ -9,7 +9,7 @@ const { title, description } = Astro.props;
 
 <div class="project-card">
     <h3>{title}</h3>
-    <p>{description}.</p>
+    <p class="project-description">{description}</p>
     <a href="projects/project-one/index.html" class="btn-small">View →</a>
 </div>
 
@@ -30,6 +30,10 @@ const { title, description } = Astro.props;
         font-size: 0.95rem;
         line-height: 1.4;
         margin-bottom: 1rem;
+    }
+
+    .project-description {
+        white-space: pre-line;
     }
 
     /* Button */

@@ -1,83 +1,70 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import Nav from "../components/Nav.astro";
+import Layout from "../layouts/layout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import Footer from "../components/Footer.astro";
 import CartPole from "../components/CartPole.jsx";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { projects } from "../data/projects";
+import { pathHasLocale } from "astro:i18n";
+
+// Pick specific projects by index
+const project1 = projects[0];
+const project2 = projects[1];
+const project3 = projects[2];
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Nav />
+<Layout>
+	<section class="hero">
+		<div class="hero-text">
+			<h1>Hey,<br />My name is Yuchen.</h1>
+			<p>
+				I am a student at the University of Michigan. My passion is
+				exploring novel coding projects.
+			</p>
+			<a href="project-start">See some of my side projects below</a>
+		</div>
 
-		<section class="hero">
-			<div class="hero-text">
-				<h1>Hey,<br />My name is Yuchen.</h1>
-				<p>
-					I am a student at the University of Michigan. My passion is
-					exploring novel coding projects.
-				</p>
-				<a href="project-start">See some of my side projects below</a>
+		<div class="cartpole-container">
+			<CartPole client:load />
+		</div>
+	</section>
+
+	<hr class="divider" />
+
+	<section class="projects">
+		<h1 id="project-start">Projects</h1>
+
+		<!-- Project 1 -->
+		<div class="project-row">
+			<div class="project-demo">
+				<p>Placeholder</p>
 			</div>
 
-			<div class="cartpole-container">
-				<CartPole client:load />
-			</div>
-		</section>
+			<ProjectCard
+				title={project1.title}
+				description={project1.description}
+			/>
+		</div>
 
 		<hr class="divider" />
 
-		<section class="projects">
-			<h1 id="project-start">Projects</h1>
+		<!-- Project 2 -->
+		<div class="project-row">
+			<ProjectCard
+				title={project2.title}
+				description={project2.description}
+			/>
 
-			<!-- Project 1 -->
-			<div class="project-row">
-				<div class="project-demo">
-					<p>Placeholder</p>
-				</div>
-
-				<ProjectCard
-					title="Test"
-					description="Test Test Test Test Test Test"
-				/>
+			<div class="project-demo">
+				<p>Placeholder</p>
 			</div>
+		</div>
 
-			<hr class="divider" />
-
-			<!-- Project 2 -->
-			<div class="project-row">
-				<ProjectCard
-					title="Test"
-					description="Test Test Test Test Test Test"
-				/>
-
-				<div class="project-demo">
-					<p>Placeholder</p>
-				</div>
-			</div>
-
-			<hr class="divider" />
-
-			<!-- Project 3 -->
-			<div class="project-row">
-				<div class="project-demo">
-					<p>Placeholder</p>
-				</div>
-
-				<ProjectCard
-					title="Test"
-					description="Test Test Test Test Test Test"
-				/>
-			</div>
-		</section>
-
-		<Footer />
-	</body>
-</html>
+		<hr class="divider" />
+	</section>
+</Layout>
 
 <style>
 	/* <=================- hero section styling -==================> */
@@ -88,7 +75,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
-		background-color: #f8f8f8;
+		background-color: #f5f2ee;
 	}
 
 	/* Fade-in keyframes */
@@ -126,7 +113,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 		animation: fadeIn 0.8s ease-in-out 0.2s forwards;
 
 		font-family: var(--font-body);
-		color: #b4923c;
 		font-size: 1.2rem;
 		text-decoration: none;
 		transition: all 0.5s ease;
@@ -135,7 +121,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 	}
 
 	.hero a:hover {
-		color: #f1cf78;
+		color: #a0a0a0;
 	}
 
 	.cartpole-container {
