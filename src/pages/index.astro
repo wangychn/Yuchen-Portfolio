@@ -23,7 +23,7 @@ const project3 = projects[2];
 				I am a student at the University of Michigan. My passion is
 				exploring novel coding projects.
 			</p>
-			<a href="project-start">See some of my side projects below</a>
+			<p>See some of my side projects below!</p>
 		</div>
 
 		<div class="cartpole-container">
@@ -33,8 +33,8 @@ const project3 = projects[2];
 
 	<hr class="divider" />
 
-	<section class="projects">
-		<h1 id="project-start">Projects</h1>
+	<section class="projects" id="project-start">
+		<h1>Projects</h1>
 
 		<!-- Project 1 -->
 		<div class="project-row">
@@ -76,6 +76,7 @@ const project3 = projects[2];
 		justify-content: center;
 		align-items: flex-start;
 		background-color: #f5f2ee;
+		position: relative;
 	}
 
 	/* Fade-in keyframes */
@@ -106,6 +107,7 @@ const project3 = projects[2];
 		opacity: 0;
 		animation: fadeIn 0.8s ease-in-out 0.2s forwards;
 		font-family: var(--font-body);
+		font-size: large;
 	}
 
 	.hero a {
@@ -124,15 +126,16 @@ const project3 = projects[2];
 		color: #a0a0a0;
 	}
 
+	.projects {
+		background-color: #fdfcfa;
+	}
+
 	.cartpole-container {
 		position: relative;
 		width: 100vw;
 		/* span the entire viewport width */
 		overflow: visible;
-		margin: 2rem 0;
-		/* adjust vertical spacing */
-		pointer-events: none;
-		/* so clicks pass through if needed */
+		margin: 0rem 0 0;
 	}
 
 	.cartpole-container::before {

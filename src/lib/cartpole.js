@@ -77,11 +77,11 @@ export class CartPoleRenderer {
         // drawing params
         this.worldWidth = env.xThreshold * 2;
         this.scale = canvas.width / this.worldWidth;
-        this.cartWidth = 60;
-        this.cartHeight = 35;
-        this.poleWidth = 12;
+        this.cartWidth = 120;
+        this.cartHeight = 70;
+        this.poleWidth = 24;
         // this.poleLen = this.scale * (1.7 * env.length);
-        this.poleLen = 140;
+        this.poleLen = 280;
     }
 
     draw(state) {
