@@ -24,7 +24,7 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
                 const canvas = canvasRef.current;
                 if (!canvas) return;
 
-                const mod = await import('./Cartpole.js');
+                const mod = await import('./cartpole_sim.ts');
                 const { CartPoleEnv: EnvCtor, CartPoleRenderer: RendererCtor } = mod as any;
                 const env = new EnvCtor();
                 const renderer = new RendererCtor(canvas, env);
