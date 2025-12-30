@@ -1,8 +1,10 @@
 import styles from "./Sidebar.module.css";
 
+type Page = "about" | "experience" | "projects";
+
 type Props = {
-    current: string;
-    onChange: (page: string) => void;
+    current: Page;
+    onChange: (page: Page) => void;
 }
 
 const sidebarItems: { key: Page; label: string }[] = [
