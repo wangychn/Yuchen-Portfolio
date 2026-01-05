@@ -6,12 +6,14 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import { personal_info } from "../../data/data";
 
+type Page = "about" | "experience" | "projects";
+
 type Props = {
-    current: string;
-    onChange: (page: string) => void;
+    current: Page;
+    onChange: (page: Page) => void;
 }
 
-const linkIconMap: Record<string, JSX.Element> = {
+const linkIconMap: Record<string, React.ReactNode> = {
     GitHub: (
         <GitHubIcon
             sx={{ fontSize: 32, color: "#24292f" }}
