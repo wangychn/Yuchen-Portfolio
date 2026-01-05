@@ -1,16 +1,39 @@
+export interface CartPoleOptions {
+    gravity?: number;
+    massCart?: number;
+    massPole?: number;
+    length?: number;
+    forceMag?: number;
+    tau?: number;
+    thetaThreshold?: number;
+    xThreshold?: number;
+}
+
+export type CartPoleStep = { state: number[]; reward: number; done: boolean };
 
 export class CartPoleEnv {
+    gravity: number;
+    massCart: number;
+    massPole: number;
+    totalMass: number;
+    poleMassLength: number;
+    length: number;
+    forceMag: number;
+    tau: number;
+    thetaThreshold: number;
+    xThreshold: number;
+    state: number[] = [0, 0, 0, 0];
+
     constructor({
         gravity = 9.8,
         massCart = 1.0,
         massPole = 0.1,
-        length = 0.5,         // actually half the pole’s length
+        length = 0.5,
         forceMag = 10.0,
-        tau = 0.02,           // time step
+        tau = 0.02,
         thetaThreshold = 360 * Math.PI / 180,
         xThreshold = 2.4,
-    } = {}) {
-        // physics params
+    }: CartPoleOptions = {}) {
         this.gravity = gravity;
         this.massCart = massCart;
         this.massPole = massPole;
@@ -19,36 +42,28 @@ export class CartPoleEnv {
         this.length = length;
         this.forceMag = forceMag;
         this.tau = tau;
-        // termination thresholds
         this.thetaThreshold = thetaThreshold;
         this.xThreshold = xThreshold;
-        // state vector [x, xDot, theta, thetaDot]
-        this.state = null;
+        this.state = [0, 0, 0, 0];
     }
 
-
-    reset() {
-        // uniform random in [-0.05, +0.05]
+    reset(): number[] {
         this.state = Array(4).fill(0).map(() => (Math.random() * 0.1 - 0.05));
         return this.state;
     }
 
-    step(action) {
-        // apply physics update exactly as Gym’s CartPole
+    step(action: number): CartPoleStep {
         let [x, xDot, theta, thetaDot] = this.state;
-
         const force = action === 1 ? this.forceMag : -this.forceMag;
         const costheta = Math.cos(theta);
         const sintheta = Math.sin(theta);
 
-        // equations of motion
         const temp = (force + this.poleMassLength * thetaDot * thetaDot * sintheta)
             / this.totalMass;
         const thetaAcc = (this.gravity * sintheta - costheta * temp) /
             (this.length * (4.0 / 3.0 - this.massPole * costheta * costheta / this.totalMass));
         const xAcc = temp - this.poleMassLength * thetaAcc * costheta / this.totalMass;
 
-        // Euler integration
         x += this.tau * xDot;
         xDot += this.tau * xAcc;
         theta += this.tau * thetaDot;
@@ -56,7 +71,6 @@ export class CartPoleEnv {
 
         this.state = [x, xDot, theta, thetaDot];
 
-        // check termination
         const done = (
             x < -this.xThreshold ||
             x > this.xThreshold ||
@@ -70,30 +84,32 @@ export class CartPoleEnv {
 }
 
 export class CartPoleRenderer {
-    constructor(canvas, env) {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    env: CartPoleEnv;
+    worldWidth: number;
+    scale: number;
+    cartWidth = 120;
+    cartHeight = 70;
+    poleWidth = 24;
+    poleLen = 280;
+
+    constructor(canvas: HTMLCanvasElement, env: CartPoleEnv) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
+        this.ctx = canvas.getContext('2d')!;
         this.env = env;
-        // drawing params
         this.worldWidth = env.xThreshold * 2;
         this.scale = canvas.width / this.worldWidth;
-        this.cartWidth = 120;
-        this.cartHeight = 70;
-        this.poleWidth = 24;
-        // this.poleLen = this.scale * (1.7 * env.length);
-        this.poleLen = 280;
     }
 
-    draw(state) {
+    draw(state: number[]) {
         const [x, , theta] = state;
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // compute cart center
         const cartX = x * this.scale + this.canvas.width / 2;
         const cartY = this.canvas.height * 0.8;
 
-        // draw cart
         ctx.fillStyle = "#333";
         ctx.fillRect(
             cartX - this.cartWidth / 2,
@@ -102,7 +118,6 @@ export class CartPoleRenderer {
             this.cartHeight
         );
 
-        // draw pole
         ctx.save();
         ctx.translate(cartX, cartY - this.cartHeight / 2);
         ctx.rotate(theta);
@@ -117,6 +132,5 @@ export class CartPoleRenderer {
     }
 }
 
-// Provide a default export to satisfy any consumers accidentally importing the module as a default import.
-// Keeps existing named exports intact.
+// Optional default export for compatibility:
 export default { CartPoleEnv, CartPoleRenderer };

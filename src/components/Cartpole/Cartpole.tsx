@@ -1,46 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
 import * as ort from 'onnxruntime-web';
 
-// IMPORTANT: handle deploy base paths too
-const base = import.meta.env.BASE_URL || "/";
-
 ort.env.wasm.numThreads = 1;
 
-import { CartPoleEnv, CartPoleRenderer } from './cartpole.js';
+type CartPoleProps = { modelPath?: string };
 
-export default function CartPole({ modelPath = '/cartpole/model.onnx' }) {
+export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPoleProps) {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-
-    const canvasRef = useRef(null);
-
-    const [actionState, setActionState] = useState(0); // 0 = left, 1 = right
-    const [flashKey, setFlashKey] = useState(0);       // to retrigger CSS animation
-    const [error, setError] = useState(null);
-    const scoresRef = useRef([0, 0]);
-    const lastActionRef = useRef(0);
-
-    // percentages for bar widths (computed each render from ref)
+    const [actionState, setActionState] = useState<number>(0); // 0 = left, 1 = right
+    const [, setFlashKey] = useState<number>(0);       // setter only to retrigger CSS animation
+    const [error, setError] = useState<string | null>(null);
+    const scoresRef = useRef<number[]>([0, 0]);
+    const lastActionRef = useRef<number>(0);
 
     useEffect(() => {
         let isMounted = true;
-        let session;
-        let inputName;
-        let outputName;
+        let session: ort.InferenceSession | undefined;
+        let inputName: string | undefined;
+        let outputName: string | undefined;
         const run = async () => {
             try {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
 
-                const env = new CartPoleEnv();
-                const renderer = new CartPoleRenderer(canvas, env);
+                const mod = await import('./cartpole_sim.ts');
+                const { CartPoleEnv: EnvCtor, CartPoleRenderer: RendererCtor } = mod as any;
+                const env = new EnvCtor();
+                const renderer = new RendererCtor(canvas, env);
                 // Draw the initial state
                 renderer.draw(env.reset());
 
                 // Load the model once
                 session = await ort.InferenceSession.create(modelPath);
                 // Use the model's actual input/output names
-                inputName = session.inputNames[0];
-                outputName = session.outputNames[0];
+                inputName = (session as any).inputNames?.[0] as string | undefined;
+                outputName = (session as any).outputNames?.[0] as string | undefined;
 
                 let input = new ort.Tensor(
                     'float32',
@@ -50,12 +45,14 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }) {
 
                 // Main loop (~20 FPS)
                 while (isMounted) {
+                    if (!session || !inputName || !outputName) break;
+
                     // Run inference with the correct key
                     const outputMap = await session.run({ [inputName]: input });
 
                     // Read the output tensor by its actual name
-                    const tensor = outputMap[outputName];
-                    const scores = Array.from(tensor.data);
+                    const tensor = (outputMap as any)[outputName];
+                    const scores = Array.from(tensor.data as Float32Array);
                     const action = scores.indexOf(Math.max(...scores));
 
                     // Update HUD data with cooldown
@@ -67,9 +64,8 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }) {
                         setFlashKey(k => k + 1);
                         lastActionRef.current = now;
                     }
-                    // (removed unconditional update of scoresRef.current, setActionState, setFlashKey)
 
-                    const { state: nextState, reward, done } = env.step(action);
+                    const { state: nextState, done } = env.step(action);
                     renderer.draw(nextState);
                     input = new ort.Tensor(
                         'float32',
@@ -83,7 +79,7 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }) {
                 }
             } catch (err) {
                 console.error('CartPole runtime error:', err);
-                if (isMounted) setError(err?.message || String(err));
+                if (isMounted) setError((err as any)?.message || String(err));
             }
         };
 

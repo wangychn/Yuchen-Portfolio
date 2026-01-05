@@ -1,4 +1,4 @@
-import CartPole from "../../components/Cartpole/Cartpole.jsx";
+import CartPole from "../../components/Cartpole/Cartpole";
 
 export default function Projects() {
     console.log("CartPole import is:", CartPole);
