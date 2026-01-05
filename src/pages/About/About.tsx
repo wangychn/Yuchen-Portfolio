@@ -6,7 +6,7 @@ import {
     Link,
 } from "@mui/material";
 
-import { about } from "../../data/data";
+import { paragraphs, personal_info } from "../../data/data";
 
 export default function About() {
     return (
@@ -18,8 +18,8 @@ export default function About() {
             <Stack direction="row" spacing={3} alignItems="flex-start">
                 <Box
                     component="img"
-                    src={about.photo}
-                    alt={about.name}
+                    src={personal_info.photo}
+                    alt={personal_info.name}
                     sx={{
                         width: 190,
                         height: 250,
@@ -33,11 +33,11 @@ export default function About() {
                         maxWidth: 640
 
                     }}>
-                        {about.blurb}
+                        {paragraphs.blurb}
                     </Typography>
 
                     <Stack direction="row" spacing={1} mt={1}>
-                        {about.linksList.map((l) => (
+                        {personal_info.linksList.map((l) => (
                             <Link
                                 key={l.href}
                                 href={l.href}
@@ -51,7 +51,7 @@ export default function About() {
                 </Box>
             </Stack>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 5 }} />
 
             <Typography
                 variant="h5"
@@ -63,8 +63,25 @@ export default function About() {
             </Typography>
 
             <Typography sx={{ maxWidth: 760 }}>
-                {about.bio}
+                {paragraphs.bio}
             </Typography>
+
+            <Divider sx={{ my: 5 }} />
+
+            <Typography
+                variant="h5"
+                fontWeight={700}
+                color="primary"
+                gutterBottom
+            >
+                Currently working on
+            </Typography>
+
+            <Typography sx={{ maxWidth: 760 }}>
+                {paragraphs.current_projects}
+            </Typography>
+
+
         </Box>
     );
 }

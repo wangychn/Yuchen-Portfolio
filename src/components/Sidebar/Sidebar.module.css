@@ -49,7 +49,7 @@
 
 .iconRow {
     display: flex;
-    gap: 10px;
+    gap: 25px;
     margin-top: 10px;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .iconBtn:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(144, 179, 212, 0.52);
 }
 
 .nav {
