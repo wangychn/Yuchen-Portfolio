@@ -5,6 +5,12 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import { personal_info } from "../../data/data";
+import EmailIcon from "@mui/icons-material/Email";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+
+import { personal_info } from "../../data/data";
 
 type Page = "about" | "experience" | "projects";
 
@@ -53,11 +59,34 @@ export default function Sidebar({ current, onChange }: Props) {
                         alt="Yuchen Wang"
                         className={styles.avatar}
                     />
+                    <img
+                        src={personal_info.profile_photo}
+                        alt="Yuchen Wang"
+                        className={styles.avatar}
+                    />
 
                     <div className={styles.name}>Yuchen Wang</div>
                     <div className={styles.subtitle}>Student @ University of Michigan</div>
 
                     <div className={styles.iconRow} aria-label="Social links">
+                        {personal_info.linksList.map((link) => {
+                            const isEmail = link.label === "Email";
+                            const href = isEmail ? `mailto:${link.href}` : link.href;
+
+                            return (
+                                <a
+                                    key={link.label}
+                                    className={styles.iconBtn}
+                                    href={href}
+                                    target={isEmail ? undefined : "_blank"}
+                                    rel={isEmail ? undefined : "noreferrer"}
+                                    title={link.label}
+                                    aria-label={link.label}
+                                >
+                                    {linkIconMap[link.label]}
+                                </a>
+                            );
+                        })}
                         {personal_info.linksList.map((link) => {
                             const isEmail = link.label === "Email";
                             const href = isEmail ? `mailto:${link.href}` : link.href;
@@ -97,6 +126,7 @@ export default function Sidebar({ current, onChange }: Props) {
 
                 <div className={styles.footer}>© 2019–2025 Yuchen Wang</div>
             </div>
+        </aside >
         </aside >
     );
 }
