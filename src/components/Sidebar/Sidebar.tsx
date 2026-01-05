@@ -1,4 +1,10 @@
 import styles from "./Sidebar.module.css";
+import EmailIcon from "@mui/icons-material/Email";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+
+import { personal_info } from "../../data/data";
 
 type Page = "about" | "experience" | "projects";
 
@@ -6,6 +12,29 @@ type Props = {
     current: Page;
     onChange: (page: Page) => void;
 }
+
+const linkIconMap: Record<string, React.ReactNode> = {
+    GitHub: (
+        <GitHubIcon
+            sx={{ fontSize: 32, color: "#24292f" }}
+        />
+    ),
+    LinkedIn: (
+        <LinkedInIcon
+            sx={{ fontSize: 32, color: "#24292f" }}
+        />
+    ),
+    Email: (
+        <EmailIcon
+            sx={{ fontSize: 32, color: "#24292f" }}
+        />
+    ),
+    Calendar: (
+        <CalendarMonthIcon
+            sx={{ fontSize: 32, color: "#24292f" }}
+        />
+    ),
+};
 
 const sidebarItems: { key: Page; label: string }[] = [
     { key: "about", label: "About" },
@@ -19,35 +48,39 @@ export default function Sidebar({ current, onChange }: Props) {
             <div className={styles.inner}>
                 {/* Profile block */}
                 <div className={styles.profile}>
-                    <div className={styles.avatar} aria-hidden="true" />
+                    <img
+                        src={personal_info.profile_photo}
+                        alt="Yuchen Wang"
+                        className={styles.avatar}
+                    />
 
                     <div className={styles.name}>Yuchen Wang</div>
                     <div className={styles.subtitle}>Student @ University of Michigan</div>
 
-                    {/* Icon row (swap to Ant icons later) */}
                     <div className={styles.iconRow} aria-label="Social links">
-                        <a className={styles.iconBtn} href="#" title="Email" aria-label="Email">
-                            ✉️
-                        </a>
-                        <a className={styles.iconBtn} href="#" title="GitHub" aria-label="GitHub">
-                            🐙
-                        </a>
-                        <a className={styles.iconBtn} href="#" title="LinkedIn" aria-label="LinkedIn">
-                            in
-                        </a>
-                        <a className={styles.iconBtn} href="#" title="Calendar" aria-label="Calendar">
-                            📅
-                        </a>
-                        <a className={styles.iconBtn} href="#" title="X/Twitter" aria-label="X/Twitter">
-                            x
-                        </a>
+                        {personal_info.linksList.map((link) => {
+                            const isEmail = link.label === "Email";
+                            const href = isEmail ? `mailto:${link.href}` : link.href;
+
+                            return (
+                                <a
+                                    key={link.label}
+                                    className={styles.iconBtn}
+                                    href={href}
+                                    target={isEmail ? undefined : "_blank"}
+                                    rel={isEmail ? undefined : "noreferrer"}
+                                    title={link.label}
+                                    aria-label={link.label}
+                                >
+                                    {linkIconMap[link.label]}
+                                </a>
+                            );
+                        })}
                     </div>
                 </div>
 
-                {/* Nav */}
                 <nav className={styles.nav} aria-label="Primary">
                     {sidebarItems.map((item) => {
-                        // const active = item.key === current;
 
                         return (
                             <button
@@ -64,6 +97,6 @@ export default function Sidebar({ current, onChange }: Props) {
 
                 <div className={styles.footer}>© 2019–2025 Yuchen Wang</div>
             </div>
-        </aside>
+        </aside >
     );
 }
