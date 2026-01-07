@@ -101,7 +101,15 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
     // const renderScale = 15;
 
     return (
-        <div style={{ display: "flex", flexDirection: "row", position: "relative", width: displayW, height: displayH }}>
+        <div
+            style={{
+                // display: "flex",
+                // flexDirection: "row",
+                // position: "relative",
+                width: displayW,
+                height: displayH
+            }}
+        >
             <canvas
                 ref={canvasRef}
                 width={displayW * renderScale}
@@ -113,7 +121,9 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
             <div
                 className={`cp-hud ${actionState === 1 ? "right" : "left"}`}
                 style={{
-                    // position: "absolute",
+                    position: "absolute",
+                    right: 8,
+                    top: 200,
                     borderRadius: 10,
                     fontFamily: "var(--font-body, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif)",
                     fontSize: 12,

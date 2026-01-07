@@ -16,24 +16,40 @@ export const personal_info = {
 
 export const paragraphs = {
     blurb: (
-        "I’m a Computer Science and Business student at the University of Michigan who enjoys building "
-        + "reliable systems and exploring how machine learning ideas translate into real, usable software."
+        "I’m a Computer Science at the University of Michigan my focus is "
+        + "distributed training of models and exploring novel model architectures."
     ),
     bio: (
-        "I am a Computer Science and Business student at the University of Michigan with interests in systems, "
+        "I am a Computer Science student at the University of Michigan with interests in systems, "
         + "machine learning, and applied AI research. I have worked on projects spanning reinforcement learning, "
-        + "large language models, and full-stack systems, and have experience deploying production-level software "
-        + "through internships and research collaborations. Previously, I interned at a startup accelerator and "
-        + "worked on applied software and data projects across multiple early-stage companies. I have also served "
-        + "as a teaching assistant and peer mentor in technical courses, and I actively build research-oriented "
-        + "projects that bridge theory and real-world deployment. My current focus is on developing robust, "
-        + "interpretable AI systems and exploring research directions at the intersection of learning, reasoning, "
-        + "and systems."
+        + "large language models, and full-stack systems, and have experience deploying production-level software. "
+        + "I had a great time working as a software engineer at Amazon Web Services, but  "
+        + "want to see how far I can go with ai research  "
+        + "My current focus is on developing robust, distrbuted AI systems. "
     ),
-    current_projects: (
-        "Building and deploying reinforcement learning demos (e.g., Cart-Pole DQN) with ONNX and WebAssembly for in-browser inference."
-        + "Exploring AI systems and infrastructure topics, including model export, runtimes, and deployment trade-offs."
-        + "Developing full-stack and cloud-backed applications that integrate modern ML workflows."
-        + "Preparing research-oriented projects and materials for graduate school and industry applications."
-    )
+    current_projects: [
+        {
+            title: "In-browser RL demos (ONNX + WebAssembly)",
+            details: [
+                "Shipping interactive CartPole/DQN demos that run fully in the browser.",
+                "Improving rendering quality (hi-res canvas) and responsive UI behavior.",
+                "Understanding runtime constraints: WASM loading, threading, and model sizes.",
+            ],
+        },
+        {
+            title: "Distributed GPU Training",
+            details: [
+                "Studying model export formats, runtimes, and inference trade-offs.",
+                "Building intuition for performance bottlenecks and profiling workflows.",
+                "https://huggingface.co/spaces/weege007/ultrascale-playbook?section=data_parallelism",
+            ],
+        },
+        {
+            title: "Grad school + research prep!",
+            details: [
+                "Organizing research-style writeups, slides, and experiments for applications.",
+                "Iterating on project narratives and technical depth (systems + ML).",
+            ],
+        },
+    ] as const,
 };

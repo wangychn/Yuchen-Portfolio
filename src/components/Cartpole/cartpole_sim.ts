@@ -93,7 +93,7 @@ export class CartPoleRenderer {
 
     cartWidth = 52;
     cartHeight = 32;
-    poleWidth = 12;
+    poleWidth = 11;
     poleLen = 100;
 
     constructor(canvas: HTMLCanvasElement, env: CartPoleEnv) {
