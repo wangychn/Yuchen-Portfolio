@@ -10,7 +10,6 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
 
     const [actionState, setActionState] = useState<number>(0); // 0 = left, 1 = right
     const [, setFlashKey] = useState<number>(0);       // setter only to retrigger CSS animation
-    const [error, setError] = useState<string | null>(null);
     const scoresRef = useRef<number[]>([0, 0]);
     const lastActionRef = useRef<number>(0);
 
@@ -79,7 +78,6 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
                 }
             } catch (err) {
                 console.error('CartPole runtime error:', err);
-                if (isMounted) setError((err as any)?.message || String(err));
             }
         };
 
@@ -96,81 +94,79 @@ export default function CartPole({ modelPath = '/cartpole/model.onnx' }: CartPol
     const leftPct = Math.round((exps[0] / sum) * 100);
     const rightPct = 100 - leftPct;
 
-    return (
-        <div style={{ display: "flex", flexDirection: "row", width: 600, height: 400 }}>
-            {error && (
-                <div style={{ position: 'absolute', top: 16, left: 16, right: 16, padding: 8, background: 'rgba(200,0,0,0.85)', color: '#fff', borderRadius: 6, zIndex: 1000 }}>
-                    <strong>CartPole error:</strong> {error}
-                </div>
-            )}
+    const displayW = 460;
+    const displayH = 160;
+    // Render at higher internal resolution, but display at smaller CSS size.
+    const renderScale = Math.max(2, Math.round(window.devicePixelRatio || 1));
+    // const renderScale = 15;
 
+    return (
+        <div style={{ display: "flex", flexDirection: "row", position: "relative", width: displayW, height: displayH }}>
             <canvas
                 ref={canvasRef}
-                width={1200}
-                height={800}
-                style={{ display: "block" }}
+                width={displayW * renderScale}
+                height={displayH * renderScale}
+                style={{ display: "block", width: displayW, height: displayH }}
             />
 
             {/* HUD overlay in the bottom-right corner */}
             <div
                 className={`cp-hud ${actionState === 1 ? "right" : "left"}`}
                 style={{
-                    position: "absolute",
-                    bottom: 100,
-                    right: 16,
-                    borderRadius: 8,
+                    // position: "absolute",
+                    borderRadius: 10,
                     fontFamily: "var(--font-body, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif)",
-                    fontSize: 14,
-                    background: "rgba(31, 21, 21, 0.65)",
-                    color: "#fff",
+                    fontSize: 12,
+                    background: "rgba(255, 255, 255, 0.67)",
+                    color: "#3b3b3bff",
                     userSelect: "none",
                     pointerEvents: "none",
-                    minWidth: 200,
+                    minWidth: 160,
+                    maxHeight: 90,
                     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                    animation: "cpFlash 240ms ease-in-and-out",
-                    padding: 10
+                    padding: 8,
+                    marginTop: 20,
                 }}
             >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                     <strong>Model Output</strong>
                     <span style={{
-                        padding: "2px 6px",
+                        padding: "1px 6px",
                         borderRadius: 6,
-                        background: actionState === 1 ? "rgba(76,175,80,0.9)" : "rgba(33,150,243,0.9)"
+                        background: actionState === 1 ? "rgba(76, 175, 79, 0.75)" : "rgba(33, 149, 243, 0.63)"
                     }}>
                         {actionState === 1 ? "RIGHT" : "LEFT"}
                     </span>
                 </div>
 
-                {/* Bars for scores/Q-values */}
-                <div style={{ marginBottom: 4 }}>
+                {/* Left Q Val Bar */}
+                <div style={{ marginBottom: 3 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                         <span>Left Q Val</span>
                         <span>{scoresRef.current?.[0]?.toFixed?.(2) ?? "-"}</span>
                     </div>
-                    <div style={{ height: 6, background: "rgba(255,255,255,0.15)", borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{ height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 4, overflow: "hidden" }}>
                         <div style={{
                             height: "100%",
                             width: `${leftPct}%`,
-                            background: "#2196f3",
+                            background: "#64b9ffff",
                             transition: "width 120ms linear"
                         }} />
                     </div>
                 </div>
 
-                <div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <span>Right Q Val</span>
-                        <span>{scoresRef.current?.[1]?.toFixed?.(2) ?? "-"}</span>
-                    </div>
-                    <div style={{ height: 6, background: "rgba(255,255,255,0.15)", borderRadius: 4, overflow: "hidden" }}>
-                        <div style={{
-                            height: "100%",
-                            width: `${rightPct}%`,
-                            background: "#4caf50",
-                            transition: "width 120ms linear"
-                        }} />
-                    </div>
+                {/* Left Q Val Bar */}
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span>Right Q Val</span>
+                    <span>{scoresRef.current?.[1]?.toFixed?.(2) ?? "-"}</span>
+                </div>
+                <div style={{ height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{
+                        height: "100%",
+                        width: `${rightPct}%`,
+                        background: "#64ce68ff",
+                        transition: "width 120ms linear"
+                    }} />
                 </div>
             </div>
         </div>

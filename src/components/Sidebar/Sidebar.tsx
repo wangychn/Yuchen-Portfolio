@@ -39,14 +39,15 @@ const linkIconMap: Record<string, React.ReactNode> = {
 const sidebarItems: { key: Page; label: string }[] = [
     { key: "about", label: "About" },
     { key: "experience", label: "Experience" },
-    { key: "projects", label: "Projects" },
+    // { key: "projects", label: "Projects" },
 ];
 
 export default function Sidebar({ current, onChange }: Props) {
     return (
         <aside className={styles.sidebar}>
             <div className={styles.inner}>
-                {/* Profile block */}
+
+                {/* PROFILE BLOCK */}
                 <div className={styles.profile}>
                     <img
                         src={personal_info.profile_photo}
@@ -57,6 +58,7 @@ export default function Sidebar({ current, onChange }: Props) {
                     <div className={styles.name}>Yuchen Wang</div>
                     <div className={styles.subtitle}>Student @ University of Michigan</div>
 
+                    {/* PROFILE ICONS */}
                     <div className={styles.iconRow} aria-label="Social links">
                         {personal_info.linksList.map((link) => {
                             const isEmail = link.label === "Email";
@@ -79,6 +81,7 @@ export default function Sidebar({ current, onChange }: Props) {
                     </div>
                 </div>
 
+                {/* SIDEBAR ITEMS */}
                 <nav className={styles.nav} aria-label="Primary">
                     {sidebarItems.map((item) => {
 

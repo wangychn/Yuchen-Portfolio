@@ -89,28 +89,55 @@ export class CartPoleRenderer {
     env: CartPoleEnv;
     worldWidth: number;
     scale: number;
-    cartWidth = 120;
-    cartHeight = 70;
-    poleWidth = 24;
-    poleLen = 280;
+    dpr: number;
+
+    cartWidth = 52;
+    cartHeight = 32;
+    poleWidth = 12;
+    poleLen = 100;
 
     constructor(canvas: HTMLCanvasElement, env: CartPoleEnv) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d')!;
         this.env = env;
         this.worldWidth = env.xThreshold * 2;
-        this.scale = canvas.width / this.worldWidth;
+
+        // Backing store (canvas.width/height) may be larger than CSS size.
+        const cssW = canvas.clientWidth || canvas.getBoundingClientRect().width || canvas.width;
+        this.dpr = cssW ? (canvas.width / cssW) : 1;
+
+        // Compute world-to-screen scaling in CSS pixels (logical units).
+        const logicalW = canvas.width / this.dpr;
+        this.scale = logicalW / this.worldWidth;
     }
 
     draw(state: number[]) {
         const [x, , theta] = state;
         const ctx = this.ctx;
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        const cartX = x * this.scale + this.canvas.width / 2;
-        const cartY = this.canvas.height * 0.8;
+        // Draw in logical (CSS) pixels even if backing store is higher-res.
+        const logicalW = this.canvas.width / this.dpr;
+        const logicalH = this.canvas.height / this.dpr;
 
-        ctx.fillStyle = "#333";
+        ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+        ctx.clearRect(0, 0, logicalW, logicalH);
+
+        const cartX = x * this.scale + logicalW / 2;
+        const cartY = logicalH * 0.8;
+
+
+        // Track / ground line (the cart rides on this)
+        const trackY = cartY + this.cartHeight / 2;
+        ctx.save();
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.18)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(24, trackY);
+        ctx.lineTo(this.canvas.width - 24, trackY);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = "#4e4e4eff";
         ctx.fillRect(
             cartX - this.cartWidth / 2,
             cartY - this.cartHeight / 2,
@@ -121,7 +148,7 @@ export class CartPoleRenderer {
         ctx.save();
         ctx.translate(cartX, cartY - this.cartHeight / 2);
         ctx.rotate(theta);
-        ctx.fillStyle = "#CA9865";
+        ctx.fillStyle = "#dad2a7ff";
         ctx.fillRect(
             -this.poleWidth / 2,
             -this.poleLen + this.poleWidth / 2,

@@ -2,9 +2,7 @@ import { Box, Typography, Divider, Paper } from "@mui/material";
 
 export default function Experience() {
     return (
-        <Box sx={{
-            height: "1000%",
-        }}>
+        <Box>
             <Typography variant="h3" fontWeight={800} gutterBottom>
                 Experiences
             </Typography>
@@ -14,7 +12,7 @@ export default function Experience() {
                 You can view my full resume below.
             </Typography>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 5 }} />
 
             {/* RESUME SECTION */}
             <Typography variant="h5" fontWeight={800} color="primary" gutterBottom>
@@ -54,14 +52,14 @@ export default function Experience() {
             </Paper>
 
             {/* Optional: placeholder for future timeline/entries */}
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" fontWeight={750} gutterBottom>
+            {/* <Divider sx={{ my: 3 }} /> */}
+            {/* <Typography variant="h6" fontWeight={750} gutterBottom>
                 Experience Highlights
             </Typography>
             <Typography color="text.secondary" sx={{ maxWidth: 760 }}>
                 (Coming soon) I’ll add concise, impact-focused summaries here with links to projects,
                 papers, and demos.
-            </Typography>
+            </Typography> */}
         </Box>
     );
 }
