@@ -47,8 +47,8 @@ export default function About() {
                 <Stack direction="column" spacing={3} alignItems="flex-start">
                     <Box>
                         <Typography sx={{
-                            maxWidth: 640
-
+                            maxWidth: 640,
+                            whiteSpace: "pre-line"
                         }}>
                             {paragraphs.blurb}
                         </Typography>
@@ -84,7 +84,10 @@ export default function About() {
                 Bio
             </Typography>
 
-            <Typography sx={{ maxWidth: 760 }}>
+            <Typography sx={{
+                maxWidth: 760,
+                whiteSpace: "pre-line"
+            }}>
                 {paragraphs.bio}
             </Typography>
 

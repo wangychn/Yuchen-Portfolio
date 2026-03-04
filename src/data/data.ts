@@ -16,16 +16,15 @@ export const personal_info = {
 
 export const paragraphs = {
     blurb: (
-        "I’m a Computer Science at the University of Michigan my focus is "
-        + "distributed training of models and exploring novel model architectures."
+        "I’m a Computer Science at the University of Michigan. My interests are in ML systems for training and inference. " +
+        "My goal is to build infrastructure that expands what kinds of models can be trained and deployed."
     ),
     bio: (
-        "I am a Computer Science student at the University of Michigan with interests in systems, "
-        + "machine learning, and applied AI research. I have worked on projects spanning reinforcement learning, "
-        + "large language models, and full-stack systems, and have experience deploying production-level software. "
-        + "I had a great time working as a software engineer at Amazon Web Services, but  "
-        + "want to see how far I can go with ai research  "
-        + "My current focus is on developing robust, distrbuted AI systems. "
+        "My research direction lie in designing the training and inference systems that make modern AI models possible, including distributed execution, "
+        + "runtime scheduling, and efficient use of heterogeneous hardware. \n\n"
+        + "I have worked on projects spanning reinforcement learning, large language models, and systems engineering, and have experience building "
+        + "production-level software during my time at Amazon Web Services. \n\n"
+        + "My goal is to develop novel ML systems that expand the scale and capabilities of future AI models."
     ),
     current_projects: [
         {
